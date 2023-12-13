@@ -5,21 +5,15 @@ public class ItemData : ScriptableObject
 {
     public enum ItemType
     {
-        Standard,
-        Buns,
+        None,   //未設定
+        TopBuns,   //上のバンズ
+        BottomBuns, //下のバンズ
+        Tomatos, //トマト
+        Cheese, //チーズ
+        Patties, //肉
     }
     [SerializeField, Tooltip("アイテムの種類")]
-    private ItemType _type = ItemType.Standard;
+    private ItemType _type = ItemType.None;
     public ItemType Type => _type;
 
-
-    [Header("数値")]
-    [SerializeField, Tooltip("アイテムを消したときのスコア")]
-    float _score = 0f;
-    public float Score => _score;
-
-    [Header("ビジュアル")]
-    [SerializeField, Tooltip("アイテムの画像")]
-    Sprite _itemSprite;
-    public Sprite ItemSprite => _itemSprite;
 }

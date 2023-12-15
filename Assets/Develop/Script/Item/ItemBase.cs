@@ -2,14 +2,13 @@ using UnityEngine;
 using UniRx;
 using System;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))]
 public abstract class ItemBase : MonoBehaviour
 {
     [SerializeField, Tooltip("対応するItemData")] ItemData _itemDataSource = null;
     public ItemData ItemDataSource => _itemDataSource;
-    Rigidbody2D _rigidbody2D = default;
-
+    Board _board = default;
+    int[] _myIndex = new int[2];
+    public int[] Index { get => _myIndex; set => _myIndex = value; }
     [SerializeField, Tooltip("積み終わったかどうか")]
     ReactiveProperty<bool> _isStacked = new ReactiveProperty<bool>();
     public IReadOnlyReactiveProperty<bool> IsStacked => _isStacked;
@@ -19,25 +18,33 @@ public abstract class ItemBase : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _rigidbody2D.bodyType = RigidbodyType2D.Static;
+
     }
     private protected virtual void Start()
     {
         subscription = _isStacked.Subscribe(isStacked => OnStacked());
+        _board = Board.Instance;
     }
 
 
     private protected virtual void Update()
     {
-        if (!_isStacked.Value) JudgeStacked();
+
     }
 
-    /// <summary> 積まれたかどうか判定する </summary>
-    private void JudgeStacked()
+    /// <summary> 降ろせるかどうかの判定 </summary>
+    public bool CanDescend()
     {
-        //判定する
-        _isStacked.Value = true;　//切り替える
+        if (_isStacked.Value || _board.Column - 1 == _myIndex[0]) return false; //既に積まれてるか一番下だったら降ろせない
+        else
+        {
+            if (_board.Cells[_myIndex[0] + 1, _myIndex[1]].HasItem) //下のセルにアイテムがある場合
+            {
+                _isStacked.Value = true; //切り替える
+                return false;
+            }
+            else return true;
+        }
     }
 
     public abstract void OnStacked();

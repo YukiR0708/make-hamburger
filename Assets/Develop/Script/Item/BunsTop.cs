@@ -19,7 +19,7 @@ public class BunsTop : ItemBase
     }
 
 
-    void CheckSandwitch()
+    private void CheckSandwitch()
     {
         //すぐ下のアイテムが上のバンズだったら消す
         int subTotal = 0;  //アイテム数小計
@@ -32,7 +32,7 @@ public class BunsTop : ItemBase
 
     public override void OnStacked()
     {
-        //積まれた
+        //積まれたあと
         CheckSandwitch();
     }
 

@@ -35,10 +35,10 @@ public abstract class ItemBase : MonoBehaviour
     /// <summary> 降ろせるかどうかの判定 </summary>
     public bool CanDescend()
     {
-        if (_isStacked.Value || _board.Column - 1 == _myIndex[0]) return false; //既に積まれてるか一番下だったら降ろせない
+        if (_isStacked.Value ) return false; //既に積まれてたら降ろせない
         else
         {
-            if (_board.Cells[_myIndex[0] + 1, _myIndex[1]].HasItem) //下のセルにアイテムがある場合
+            if (_board.Cells[_myIndex[0] + 1, _myIndex[1]].HasItem || _board.Column - 1 == _myIndex[0]) //下のセルにアイテムがあるか一番下の場合
             {
                 _isStacked.Value = true; //切り替える
                 return false;

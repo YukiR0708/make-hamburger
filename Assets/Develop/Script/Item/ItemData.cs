@@ -16,4 +16,8 @@ public class ItemData : ScriptableObject
     private ItemType _type = ItemType.None;
     public ItemType Type => _type;
 
+    [SerializeField, Tooltip("加算するスコア")]
+    private float _score = 0f;
+    public float Score => _score;   
+
 }
